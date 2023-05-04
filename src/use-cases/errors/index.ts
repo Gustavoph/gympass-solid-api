@@ -1,3 +1,5 @@
 export * from './invalid-credentials'
 export * from './resource-not-found'
 export * from './user-already-exists'
+export * from './max-distance'
+export * from './max-number-of-check-ins'
