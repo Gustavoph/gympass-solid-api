@@ -1,15 +1,21 @@
 import { FastifyInstance } from 'fastify'
-import { register } from './controllers/register'
+import { RegisterController } from './controllers/register'
 import { AuthenticateController } from './controllers/authenticate'
-import { AuthenticateUseCase } from '@/use-cases/authenticate'
-import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
 
-const usersRepository = new PrismaUsersRepository()
-const authenticateUseCase = new AuthenticateUseCase(usersRepository)
-const authenticateController = new AuthenticateController(authenticateUseCase)
+import {
+  makeRegisterUseCase,
+  makeAuthenticateUseCase,
+} from '@/use-cases/factories'
+
+const registerController = new RegisterController(makeRegisterUseCase())
+const authenticateController = new AuthenticateController(
+  makeAuthenticateUseCase(),
+)
 
 export async function appRoutes(app: FastifyInstance) {
-  app.post('/users', register)
+  app.post('/users', (request, reply) =>
+    registerController.execute(request, reply),
+  )
 
   app.post('/sessions', (request, reply) =>
     authenticateController.execute(request, reply),
