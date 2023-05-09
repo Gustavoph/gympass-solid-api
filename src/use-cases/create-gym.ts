@@ -1,18 +1,6 @@
 import type { Gym } from '@prisma/client'
 import { GymsRepository } from '@/repositories/gyms-repository'
 
-interface CreateGymUseCaseRequest {
-  title: string
-  description: string | null
-  phone: string | null
-  latitude: number
-  longitude: number
-}
-
-interface CreateGymUseCaseResponse {
-  gym: Gym
-}
-
 export class CreateGymUseCase {
   constructor(private readonly gymsRepository: GymsRepository) {}
 
@@ -22,7 +10,7 @@ export class CreateGymUseCase {
     phone,
     latitude,
     longitude,
-  }: CreateGymUseCaseRequest): Promise<CreateGymUseCaseResponse> {
+  }: CreateGymUseCase.Params): Promise<CreateGymUseCase.Result> {
     const gym = await this.gymsRepository.create({
       title,
       description,
@@ -32,5 +20,19 @@ export class CreateGymUseCase {
     })
 
     return { gym }
+  }
+}
+
+export namespace CreateGymUseCase {
+  export type Params = {
+    title: string
+    description: string | null
+    phone: string | null
+    latitude: number
+    longitude: number
+  }
+
+  export type Result = {
+    gym: Gym
   }
 }

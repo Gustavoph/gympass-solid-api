@@ -20,6 +20,15 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
     return check_in
   }
 
+  async findManyByUserId(userId: string, page: number): Promise<CheckIn[]> {
+    const skip = (page - 1) * 20
+    const limit = page * 20
+
+    return this.check_ins
+      .filter((item) => item.user_id === userId)
+      .slice(skip, limit)
+  }
+
   async findByUserIdOnDate(
     userId: string,
     date: Date,
