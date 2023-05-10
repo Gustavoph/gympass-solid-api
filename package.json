@@ -16,8 +16,8 @@
   "license": "ISC",
   "devDependencies": {
     "@rocketseat/eslint-config": "1.2.0",
-    "@types/node": "18.16.3",
     "@types/bcryptjs": "2.4.2",
+    "@types/node": "18.16.3",
     "@vitest/coverage-c8": "0.31.0",
     "eslint": "8.39.0",
     "prisma": "4.13.0",
@@ -28,6 +28,7 @@
     "vitest": "0.31.0"
   },
   "dependencies": {
+    "@fastify/jwt": "6.7.1",
     "@prisma/client": "4.13.0",
     "bcryptjs": "2.4.3",
     "dayjs": "1.11.7",
