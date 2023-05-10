@@ -20,7 +20,7 @@ const validateCheckInController = new ValidateCheckInController(
   makeValidateCheckInUseCase(),
 )
 
-export async function checkIns(app: FastifyInstance) {
+export async function checkInsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
 
   app.get('/check-ins/history', (request, reply) =>
