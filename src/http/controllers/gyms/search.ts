@@ -11,7 +11,7 @@ export class SearchGymController {
       page: z.coerce.number().min(1).default(1),
     })
 
-    const { q, page } = createGymsQuerySchema.parse(request.body)
+    const { q, page } = createGymsQuerySchema.parse(request.query)
 
     const { gyms } = await this.searchGymsUseCase.execute({
       query: q,

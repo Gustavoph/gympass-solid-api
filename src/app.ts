@@ -9,7 +9,8 @@ export const app = fastify()
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
 })
-app.register(appRoutes)
+
+appRoutes(app)
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
