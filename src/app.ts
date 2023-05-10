@@ -1,7 +1,7 @@
 import fastify from 'fastify'
 import fastifyJwt from '@fastify/jwt'
+import { appRoutes } from './http/controllers/routes'
 
-import { appRoutes } from './http/router'
 import { ZodError } from 'zod'
 import { env } from './env'
 
