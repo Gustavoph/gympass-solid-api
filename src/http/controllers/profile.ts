@@ -16,7 +16,7 @@ export class ProfileController {
         password_hash: undefined,
       }
 
-      return reply.status(201).send({ user: userWithoutPasswordHash })
+      return reply.status(200).send({ user: userWithoutPasswordHash })
     } catch (err) {
       if (err instanceof ResourceNotFoundError) {
         return reply.status(409).send({ message: err.message })

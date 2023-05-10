@@ -2,7 +2,7 @@ import { app } from '@/app'
 import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
-describe('Profile - e2e', () => {
+describe('Authentication - e2e', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -11,31 +11,21 @@ describe('Profile - e2e', () => {
     await app.close()
   })
 
-  it('should be able to get user profile', async () => {
+  it('should be able to authenticate', async () => {
     await request(app.server).post('/users').send({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
     })
 
-    const auth = await request(app.server).post('/sessions').send({
+    const response = await request(app.server).post('/sessions').send({
       email: 'johndoe@example.com',
       password: '123456',
     })
 
-    const { accessToken } = auth.body
-
-    const response = await request(app.server)
-      .get('/me')
-      .set('Authorization', `Bearer ${accessToken}`)
-      .send()
-
     expect(response.statusCode).toEqual(200)
-    expect(response.body.user).toEqual(
-      expect.objectContaining({
-        name: 'John Doe',
-        email: 'johndoe@example.com',
-      }),
-    )
+    expect(response.body).toEqual({
+      accessToken: expect.any(String),
+    })
   })
 })
