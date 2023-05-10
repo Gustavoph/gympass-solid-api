@@ -8,6 +8,7 @@ import { GetUserMetricsController } from './metrics'
 import { makeGetUserMetricsUseCase } from '@/use-cases/factories/make-get-user-metrics-use-case'
 import { makeValidateCheckInUseCase } from '@/use-cases/factories/make-validate-check-in-use-case'
 import { ValidateCheckInController } from './validate'
+import { verifyUserRole } from '@/http/middlewares/verify-user-role'
 
 const checkInsController = new CreateCheckInController(makeCheckInUseCase())
 const checkInHistoryController = new CheckInHistoryController(
@@ -35,7 +36,9 @@ export async function checkInsRoutes(app: FastifyInstance) {
     checkInsController.execute(request, reply),
   )
 
-  app.patch('/check-ins/:checkInId/validate', (request, reply) =>
-    validateCheckInController.execute(request, reply),
+  app.patch(
+    '/check-ins/:checkInId/validate',
+    { onRequest: [verifyUserRole('ADMIN')] },
+    (request, reply) => validateCheckInController.execute(request, reply),
   )
 }

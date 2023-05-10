@@ -1,14 +1,24 @@
 import fastify from 'fastify'
-import fastifyJwt from '@fastify/jwt'
-import { appRoutes } from './http/controllers/routes'
-
 import { ZodError } from 'zod'
+import fastifyJwt from '@fastify/jwt'
+import fastifyCookie from '@fastify/cookie'
+
 import { env } from './env'
+import { appRoutes } from './http/controllers/routes'
 
 export const app = fastify()
 app.register(fastifyJwt, {
+  cookie: {
+    cookieName: 'refreshToken',
+    signed: false,
+  },
   secret: env.JWT_SECRET,
+  sign: {
+    expiresIn: '10m',
+  },
 })
+
+app.register(fastifyCookie)
 
 appRoutes(app)
 

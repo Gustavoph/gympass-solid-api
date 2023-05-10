@@ -33,8 +33,8 @@ describe('Nearby Gyms (e2e)', () => {
         title: 'TypeScript Gym',
         description: 'Some description.',
         phone: '1199999999',
-        latitude: -27.0610928,
-        longitude: -49.5229501,
+        latitude: -27.2092052,
+        longitude: -49.6401091,
       })
 
     const response = await request(app.server)
@@ -45,6 +45,8 @@ describe('Nearby Gyms (e2e)', () => {
       })
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
+
+    console.log(response.body)
 
     expect(response.statusCode).toEqual(200)
     expect(response.body.gyms).toHaveLength(1)

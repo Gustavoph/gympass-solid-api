@@ -20,8 +20,10 @@ export class AuthenticateController {
         password,
       })
 
-      const token = await reply.jwtSign(
-        {},
+      const accessToken = await reply.jwtSign(
+        {
+          role: user.role,
+        },
         {
           sign: {
             sub: user.id,
@@ -29,7 +31,27 @@ export class AuthenticateController {
         },
       )
 
-      return reply.status(200).send({ accessToken: token })
+      const refresh = await reply.jwtSign(
+        {
+          role: user.role,
+        },
+        {
+          sign: {
+            sub: user.id,
+            expiresIn: '7d',
+          },
+        },
+      )
+
+      return reply
+        .setCookie('refreshToken', refresh, {
+          path: '/',
+          secure: true,
+          sameSite: true,
+          httpOnly: true,
+        })
+        .status(200)
+        .send({ accessToken })
     } catch (err) {
       if (err instanceof InvalidCredentialsError) {
         return reply.status(400).send({ message: err.message })
